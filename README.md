@@ -114,6 +114,12 @@ A interface consome a API e exibe:
 
 ## 🖼️ Demonstração
 
+| Faixa de Probabilidade | Status do Crédito   | Interpretação |
+|-----------------------|---------------------|---------------|
+| ≥ 0.35                | Aprovado            | Cliente com bom perfil de risco |
+| 0.25 – 0.34           | Análise Manual      | Cliente com risco intermediário |
+| < 0.25                | Reprovado           | Cliente com alto risco de inadimplência |
+
 ![Tela de Análise de Crédito](assets/screenshot-ui.png)
 
 ---
