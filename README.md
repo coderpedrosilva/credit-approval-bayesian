@@ -1,190 +1,140 @@
 # 💳 Análise de Aprovação de Crédito com Modelos Bayesianos
 
-Projeto end-to-end de **análise e previsão de aprovação de crédito** utilizando **Modelos Bayesianos**, com geração de dados sintéticos, baseline probabilístico, regressão logística bayesiana, interpretação estatística dos coeficientes e automação completa do pipeline em Python.
+Projeto de **análise e previsão de aprovação de crédito** utilizando **Aprendizado Bayesiano**, com geração de dados sintéticos, baseline probabilístico, regressão logística bayesiana, API de inferência e interface web integrada.
 
 ---
 
 ## 🎯 Objetivo do Projeto
 
-Demonstrar, de forma prática e aplicada, como **Modelos Bayesianos** podem ser utilizados para:
+Demonstrar, de forma prática, como **Modelos Bayesianos** podem ser utilizados para:
 
 - Estimar **probabilidades reais de aprovação de crédito**
-- Quantificar **incerteza** nas previsões
+- Quantificar **incerteza**
 - Interpretar estatisticamente o impacto das variáveis
-- Comparar abordagens probabilísticas clássicas e bayesianas
-
-Este projeto foi construído com foco em **clareza conceitual**, **reprodutibilidade** e **qualidade de engenharia**.
+- Disponibilizar previsões via **API REST**
+- Visualizar decisões em uma **interface web**
 
 ---
 
-## 🧠 Por que Modelos Bayesianos?
+## 🧠 Por que Bayes?
 
-Diferente de modelos puramente frequencistas, a abordagem bayesiana permite:
-
-- Trabalhar explicitamente com **distribuições de probabilidade**
-- Incorporar **conhecimento prévio (priors)**
-- Obter **intervalos de credibilidade (HDI)** ao invés de apenas estimativas pontuais
-- Tomar decisões mais robustas em cenários de risco, como crédito
-
-Isso é especialmente relevante em contextos financeiros, onde **incerteza importa tanto quanto acurácia**.
+- Probabilidades reais ao invés de scores arbitrários  
+- Intervalos de credibilidade (HDI)  
+- Tomada de decisão baseada em incerteza  
+- Padrão utilizado em motores reais de crédito  
 
 ---
 
 ## 🧪 Modelos Implementados
 
 ### 1️⃣ Naive Bayes (Baseline)
-- Modelo probabilístico clássico
-- Serve como **linha de base**
-- Rápido, simples e interpretável
+- Linha de base probabilística  
+- Rápido e interpretável  
 
 ### 2️⃣ Regressão Logística Bayesiana (PyMC)
-- Modelo bayesiano completo
-- Inferência via **NUTS (No-U-Turn Sampler)**
-- Estima distribuições para:
-  - Intercepto
-  - Coeficientes das features
-- Permite interpretação estatística profunda dos efeitos
+- Inferência MCMC com NUTS  
+- Estima distribuições de parâmetros  
+- Gera probabilidades calibradas  
 
 ---
 
-## 🏗️ Arquitetura do Projeto
+## 🏗️ Arquitetura
 
 ```bash
 analise-credito-aprendizado-bayesiano/
-│
-├── data/ # (ignorado no git)
-│ └── processed/ 
-│   └── dados_credito_processados.csv # dados pré-processados
-│ ├── raw/ 
-│   └── dados_credito_sinteticos.csv # dados sintéticos brutos
-│
-├── results/ # (ignorado no git)
-│ ├── bayesian_trace.nc # trace bayesiano (InferenceData)
-│ ├── coefficients_summary.csv 
-│ └── metrics.json # métricas dos modelos
-│
+├── data/ (gitignored)
+├── results/ (gitignored)
+├── models/ (gitignored)
+│   └── bayesian_credit_trace.nc
 ├── src/
-│ ├── interpretation/
-│ │ └── coefficients.py
-│ ├── utils/
-│ │ ├── save_results.py
-│ │ └── save_trace.py
-│ ├── bayesian_logistic.py
-│ ├── evaluate_models.py
-│ ├── generate_data.py
-│ ├── naive_bayes.py
-│ ├── pipeline.py
-│ └── preprocess.py
-│
-├── .gitignore
+│   ├── pipeline.py
+│   ├── inference.py
+│   ├── generate_data.py
+│   └── ...
+├── api/
+│   ├── main.py
+│   └── static/index.html
 ├── main.py
-├── README.md 
 └── requirements.txt
 ```
-
-### 🔑 Decisões de Arquitetura
-- **Pipeline automatizado** (execução com um único comando)
-- Separação clara entre:
-  - geração de dados
-  - modelagem
-  - avaliação
-  - persistência de resultados
-- Artefatos de dados e resultados **fora do versionamento** (`.gitignore`)
-- Estrutura pensada para fácil evolução (novos modelos, novos datasets)
 
 ---
 
 ## ⚙️ Por que Python 3.11?
 
-- Melhor desempenho geral
-- Melhor gerenciamento de memória
-- Compatibilidade estável com:
-  - NumPy
-  - scikit-learn
-  - PyMC
-  - ArviZ
-- Ideal para workloads científicos modernos
+- Melhor desempenho  
+- Melhor gerenciamento de memória  
+- Compatibilidade com PyMC, NumPy, sklearn e ArviZ  
 
 ---
 
 ## 🔄 Pipeline Automatizado
 
-Executar o projeto é simples:
-
 ```bash
 python main.py
 ```
-O pipeline realiza automaticamente:
 
-1. Criação da estrutura de diretórios (data/, results/)
+O pipeline:
 
-2. Geração de dataset sintético realista
+1. Gera dados sintéticos  
+2. Pré-processa dados  
+3. Treina modelos  
+4. Avalia modelos  
+5. Persiste modelo bayesiano  
+6. Salva métricas e coeficientes  
 
-3. Pré-processamento dos dados
+---
 
-4. Treinamento do modelo Naive Bayes
+## 🌐 API de Inferência
 
-5. Treinamento do modelo Bayesiano
+Após o treino:
 
-6. Avaliação dos modelos
+```bash
+python -m uvicorn api.main:app --reload
+```
+---
 
-7. Salvamento de métricas, trace e coeficientes
+## 🖥️ Interface Web
 
-8. Interpretação estatística dos resultados
+Acesse:
 
-## 📊 Resultados Obtidos
-Exemplo de saída ao executar o pipeline:
-
-```text
-Copiar código
-Naive Bayes
-Accuracy: 0.98
-ROC AUC: 0.68
-
-Bayesian Logistic Regression
-Accuracy: 0.98
-ROC AUC: 0.73
+```bash
+http://127.0.0.1:8000/ui
 ```
 
-### 📌 Observação importante:
+A interface consome a API e exibe:
 
-Apesar de acurácias similares, o modelo bayesiano apresenta:
+- Cliente  
+- Probabilidade de aprovação  
+- Status (Aprovado / Análise Manual / Reprovado)
 
-- Melhor separação probabilística (ROC AUC maior)
+---
 
-- Interpretação estatística robusta
+## 🖼️ Demonstração
 
-- Medidas explícitas de incerteza
+![Tela de Análise de Crédito](assets/screenshot-ui.png)
 
-## 📈 Interpretação Bayesiana dos Coeficientes
-Os coeficientes do modelo são analisados via intervalos de credibilidade (HDI 95%), permitindo identificar:
+---
 
-- Variáveis com impacto estatisticamente relevante
+## 📈 Interpretação Bayesiana
 
-- Direção do efeito (positivo ou negativo)
+Coeficientes analisados por HDI 95%.
 
-- Grau de incerteza associado a cada feature
+| Feature | Mean | HDI 2.5% | HDI 97.5% |
+|--------|-----|---------|----------|
+| coef_3 | -0.486 | -0.839 | -0.130 |
+| coef_4 | -0.513 | -0.858 | -0.164 |
 
-**Exemplo:** 
-| Feature | Mean   | HDI 2.5% | HDI 97.5% |
-|--------|--------|----------|-----------|
-| coef_3 | -0.486 | -0.839   | -0.130    |
-| coef_4 | -0.513 | -0.858   | -0.164    |
+Features cujo HDI não cruza zero têm efeito consistente.
 
-➡️ Features cujo HDI não cruza zero possuem efeito consistente na decisão de crédito.
+---
 
 ## 🧩 Conceitos Demonstrados
 
-- Inferência Bayesiana
-
-- Regressão Logística Bayesiana
-
-- MCMC e NUTS
-
-- Intervalos de Credibilidade (HDI)
-
-- Avaliação de modelos probabilísticos
-
-- Engenharia de pipelines de ML
-
-- Boas práticas de versionamento
+- Inferência Bayesiana  
+- MCMC / NUTS  
+- Regressão logística bayesiana  
+- Engenharia de pipelines  
+- APIs de inferência  
+- Visualização de score de crédito  
+- Arquitetura de motores de risco  
