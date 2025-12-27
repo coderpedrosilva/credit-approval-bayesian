@@ -1,7 +1,9 @@
+import os
 import numpy as np
 import arviz as az
 
-TRACE_PATH = "models/bayesian_credit_trace.nc"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TRACE_PATH = os.path.join(BASE_DIR, "models", "bayesian_credit_trace.nc")
 
 trace = az.from_netcdf(TRACE_PATH)
 

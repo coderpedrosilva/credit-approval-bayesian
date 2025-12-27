@@ -1,5 +1,6 @@
 import os
 
-def save_bayesian_trace(trace, output_path="results/bayesian_trace.nc"):
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    trace.to_netcdf(output_path)
+def save_bayesian_trace(trace):
+    base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    path = os.path.join(base, "models", "bayesian_credit_trace.nc")
+    trace.to_netcdf(path)
