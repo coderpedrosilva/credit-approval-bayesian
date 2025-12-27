@@ -15,15 +15,12 @@ from src.interpretation.coefficients import summarize_and_save_coefficients
 
 
 def ensure_directories():
-    """
-    Cria a estrutura de diretórios necessária caso não exista.
-    Ideal quando data/ e results/ estão no .gitignore.
-    """
     directories = [
         "data",
         "data/raw",
         "data/processed",
-        "results"
+        "results",
+        "models"   
     ]
 
     for directory in directories:
@@ -33,34 +30,29 @@ def ensure_directories():
 def run_pipeline():
     print("🔹 Iniciando pipeline de crédito bayesiano...")
 
-    # 1. Garantir estrutura de pastas
+    # 1. Garantir estrutura
     ensure_directories()
 
-    # 2. Geração de dados
+    # 2. Dados
     generate_dataset()
 
     # 3. Pré-processamento
     X_train, X_test, y_train, y_test = preprocess_data()
 
-    # 4. Modelo baseline — Naive Bayes
+    # 4. Baseline
     nb_model = train_naive_bayes(X_train, y_train)
     nb_metrics = evaluate_naive_bayes(nb_model, X_test, y_test)
 
-    # 5. Modelo bayesiano — Regressão Logística Bayesiana
+    # 5. Modelo bayesiano
     bayes_model, trace = train_bayesian_logistic(X_train, y_train)
     bayes_metrics = evaluate_bayesian_logistic(trace, X_test, y_test)
 
-    # 6. Persistência dos resultados
-    results = [
-        nb_metrics,
-        bayes_metrics
-    ]
-
-    save_metrics(results)
-    save_bayesian_trace(trace)
+    # 6. Persistência oficial
+    save_bayesian_trace(trace)          # → models/bayesian_credit_trace.nc
+    save_metrics([nb_metrics, bayes_metrics])
     coef_summary = summarize_and_save_coefficients(trace)
 
-    # 7. Exibição no terminal
+    # 7. Terminal
     print("\n📊 Resultados:")
     print(nb_metrics)
     print(bayes_metrics)
@@ -68,4 +60,5 @@ def run_pipeline():
     print("\n📈 Interpretação dos coeficientes bayesianos:")
     print(coef_summary)
 
+    print("\n💾 Modelo bayesiano persistido em models/")
     print("\n✅ Pipeline finalizado com sucesso!")
