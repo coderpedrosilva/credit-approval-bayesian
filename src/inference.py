@@ -1,11 +1,8 @@
 import numpy as np
 import arviz as az
-import joblib
 
-MODEL_PATH = "models/bayesian_credit_model.pkl"
 TRACE_PATH = "models/bayesian_credit_trace.nc"
 
-model = joblib.load(MODEL_PATH)
 trace = az.from_netcdf(TRACE_PATH)
 
 posterior = trace.posterior
