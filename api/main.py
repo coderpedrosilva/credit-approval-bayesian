@@ -19,8 +19,8 @@ def listar_clientes():
             "cliente": df_test.iloc[i]["client_id"],
             "prob_aprovacao": round(float(prob), 3),
             "status": (
-                "Aprovado" if prob >= 0.25
-                else "Análise Manual" if prob >= 0.1
+                "Aprovado" if prob >= 0.35
+                else "Análise Manual" if prob >= 0.25
                 else "Reprovado"
             )
         })
