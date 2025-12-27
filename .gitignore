@@ -23,6 +23,7 @@ src/interpretation/__pycache__/
 results/
 data/
 outputs/
+models/
 
 # ===============================
 # Artefatos de dados e modelos
