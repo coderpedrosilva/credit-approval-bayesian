@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Análise de Crédito</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        table { border-collapse: collapse; width: 60%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f4f4f4; }
+        .ok { color: green; font-weight: bold; }
+        .warn { color: orange; font-weight: bold; }
+        .no { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h2>Análise de Aprovação de Crédito</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Probabilidade</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody id="clientes"></tbody>
+</table>
+
+<script>
+fetch("http://127.0.0.1:8000/clientes")
+    .then(res => res.json())
+    .then(data => {
+        const tbody = document.getElementById("clientes");
+        data.forEach(c => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${c.cliente}</td>
+                <td>${(c.prob_aprovacao * 100).toFixed(1)}%</td>
+                <td class="${
+                    c.status === "Aprovado" ? "ok" :
+                    c.status === "Análise Manual" ? "warn" : "no"
+                }">${c.status}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    });
+</script>
+
+</body>
+</html>
