@@ -6,15 +6,19 @@ from src.bayesian_logistic import train_bayesian_logistic
 MODEL_PATH = "models/bayesian_credit_model.pkl"
 TRACE_PATH = "models/bayesian_credit_trace.nc"
 
-os.makedirs("models", exist_ok=True)
+def main():
+    os.makedirs("models", exist_ok=True)
 
-print("Treinando modelo bayesiano...")
+    print("Treinando modelo bayesiano...")
 
-X_train, X_test, y_train, y_test = preprocess_data()
+    X_train, X_test, y_train, y_test = preprocess_data()
+    model, trace = train_bayesian_logistic(X_train, y_train)
 
-model, trace = train_bayesian_logistic(X_train, y_train)
+    joblib.dump(model, MODEL_PATH)
+    trace.to_netcdf(TRACE_PATH)
 
-joblib.dump(model, MODEL_PATH)
-trace.to_netcdf(TRACE_PATH)
+    print("Modelo treinado e salvo com sucesso.")
 
-print("Modelo treinado e salvo com sucesso.")
+
+if __name__ == "__main__":
+    main()
