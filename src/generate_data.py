@@ -35,20 +35,21 @@ def generate_dataset(n_samples=1500, output_path="data/raw/dados_credito_sinteti
     def sigmoid(x):
         return 1 / (1 + np.exp(-x))
 
-    prob_aprovacao = (
-        -2.0
-        + 0.004 * (score_credito - 600)
-        + 0.00004 * renda_mensal
-        - 1.5 * historico_inadimplencia
-        - 2.0 * taxa_endividamento
-        - 0.00003 * valor_solicitado
+    # 🔹 Motor de risco calibrado (gera aprovados, análises e reprovados)
+    logit = (
+        -0.5
+        + 0.006 * (score_credito - 600)
+        + 0.00006 * renda_mensal
+        - 1.2 * historico_inadimplencia
+        - 1.0 * taxa_endividamento
+        - 0.000015 * valor_solicitado
     )
 
-    prob_aprovacao = sigmoid(prob_aprovacao)
+    prob_aprovacao = sigmoid(logit)
 
     aprovado_credito = np.random.binomial(1, prob_aprovacao)
 
-    # 🔹 Criação do DataFrame
+    # 🔹 DataFrame
     df = pd.DataFrame({
         "idade": idade,
         "renda_mensal": renda_mensal.round(2),
