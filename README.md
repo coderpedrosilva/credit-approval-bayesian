@@ -42,20 +42,22 @@ Demonstrar, de forma prática, como **Modelos Bayesianos** podem ser utilizados 
 
 ```bash
 analise-credito-aprendizado-bayesiano/
-├── data/ (gitignored)
-├── results/ (gitignored)
-├── models/ (gitignored)
-│   └── bayesian_credit_trace.nc
-├── src/
-│   ├── pipeline.py
-│   ├── inference.py
-│   ├── generate_data.py
-│   └── ...
 ├── api/
 │   ├── main.py
 │   └── static/index.html
+├── assets/
+├── data/ (gitignored)
+├── models/ (gitignored)
+│   └── bayesian_credit_trace.nc
+├── results/ (gitignored)
+├── src/  
+│   ├── inference.py
+│   ├── generate_data.py
+│   ├── pipeline.py
+│   └── ...
 ├── main.py
 └── requirements.txt
+└── ...
 ```
 
 ---
